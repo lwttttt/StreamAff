@@ -359,7 +359,32 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
 .pp-foot { margin-top: clamp(64px, 9vw, 128px); padding-block: 28px 36px; border-top: 1px solid var(--line); text-align: center; }
 .pp-foot .pp-logo { height: 22px; }
 
+.pp-gap { margin-top: clamp(18px, 2.4vw, 26px); }
+.pp-case { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); align-items: center; gap: clamp(20px, 4vw, 48px); margin-top: clamp(18px, 2.4vw, 28px); }
+.pp-case > a { display: block; cursor: zoom-in; }
+.pp-case > a img { display: block; width: 100%; height: auto; border-radius: 10px; }
+.pp-view { position: relative; aspect-ratio: 4 / 3; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--sunk);
+  touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.pp-view.drag { cursor: grabbing; }
+.pp-view canvas, .pp-poster { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.pp-view canvas { opacity: 0; transition: opacity .35s; }
+.pp-view.live canvas { opacity: 1; }
+.pp-ring { position: absolute; left: 0; top: 0; width: 46px; height: 46px; margin: -23px 0 0 -23px; border: 2px solid var(--pred); border-radius: 50%;
+  box-shadow: 0 0 0 1.5px var(--scrim), inset 0 0 0 1.5px var(--scrim); pointer-events: none; }
+.pp-hint, .pp-zoom { position: absolute; bottom: 10px; height: 30px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--scrim); color: var(--on-scrim);
+  font: 600 12px/30px var(--font); }
+.pp-hint { left: 10px; pointer-events: none; }
+.pp-zoom { right: 10px; cursor: pointer; }
+.pp-steps { display: grid; gap: clamp(44px, 6vw, 84px); margin-top: clamp(30px, 4vw, 52px); }
+.pp-step h3 { margin: 0; font-size: clamp(1.15rem, 1.9vw, 1.45rem); line-height: 1.2; letter-spacing: -.02em; font-weight: 660; }
+.pp-step h3 span { display: inline-grid; place-items: center; width: 1.75em; height: 1.75em; margin-right: .55em; border: 1px solid var(--ink); border-radius: 50%;
+  font: 600 .66em var(--mono); vertical-align: .14em; }
+.pp-step p { margin: 8px auto 0; max-width: 64ch; font-size: 16px; color: var(--ink-2); text-wrap: balance; }
+.pp-step a { display: block; margin: clamp(16px, 2.4vw, 26px) auto 0; cursor: zoom-in; }
+.pp-step a.w1 { max-width: 800px; } .pp-step a.w2 { max-width: 720px; } .pp-step a.w3 { max-width: 560px; }
+.pp-step img { display: block; width: 100%; height: auto; border-radius: 10px; }
 @media (max-width: 860px) {
+  .pp-case { grid-template-columns: minmax(0, 1fr); }
   .pp-duo { grid-template-columns: minmax(0, 1fr); }
   .pp-duo video { order: -1; }
 }
@@ -490,20 +515,44 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
 
   <section class="pp-wrap pp-sec" id="overview">
     <h2>What it does</h2>
-    <p>A request can arrive after the part was seen, while it is in view, or before it appears. StreamAff answers in language and predicts a 3D mask on the frame it selects.</p>
-    <figure class="pp-fig">
-      <a href="assets/fig1-teaser.webp" target="_blank" rel="noopener"><img src="assets/fig1-teaser.webp" width="2400" height="969" loading="lazy" alt="Three requests. History: the request arrives at t = 11 and StreamAff answers from the frame of t = 0. Current: the request at t = 7 is grounded in the same frame. Future: the request arrives at t = 5 and StreamAff waits until t = 7."></a>
-      <figcaption><b>History:</b> a request arrives at t = 11 and StreamAff responds using evidence observed at t = 0. <b>Current:</b> a request at t = 7 is grounded in the same frame. <b>Future:</b> a request arrives at t = 5; the agent waits until t = 7 to respond.</figcaption>
-    </figure>
+    <p>StreamAff answers in language and predicts a 3D mask on the points of the frame it selects.</p>
+    <div class="pp-tabs pp-gap" id="pp-cases" role="group" aria-label="Example">
+      <button type="button" data-k="history" aria-pressed="true">History</button>
+      <button type="button" data-k="current" aria-pressed="false">Current</button>
+      <button type="button" data-k="future" aria-pressed="false">Future</button>
+    </div>
+    <div class="pp-case">
+      <a id="pp-caselink" href="assets/fig1-history.webp" target="_blank" rel="noopener"><img id="pp-caseimg" src="assets/fig1-history.webp" width="1226" height="1395" alt="The request, the observed RGB-D frames, the answer and the source frame of this example."></a>
+      <div class="pp-view" id="pp-view">
+        <img class="pp-poster" id="pp-poster" src="assets/pc-history.jpg" width="640" height="480" alt="Source frame with the predicted part in green.">
+        <canvas aria-label="3D points of the source frame, with the predicted part in green"></canvas>
+        <span class="pp-hint" hidden>Drag to rotate</span>
+        <button class="pp-zoom" id="pp-zoom" type="button" hidden>Zoom to part</button>
+      </div>
+    </div>
+    <p class="pp-facts" id="pp-casecap"></p>
   </section>
 
   <section class="pp-wrap pp-sec" id="method">
     <h2>How it works</h2>
-    <p>The model scores the visual patches of the frames it reads. Their combined support, weighed against a wait option, decides when to respond; the highest-scoring patch selects the frame to ground in.</p>
-    <figure class="pp-fig">
-      <a href="assets/fig3-method.webp" target="_blank" rel="noopener"><img src="assets/fig3-method.webp" width="2400" height="1193" loading="lazy" alt="Overview of StreamAff: RGB-D frames are stored as 3D-aware visual tokens; a pointing head with a wait option decides when to respond and selects the source frame; zoom-and-refine grounding segments the part on the 3D points of that frame."></a>
-      <figcaption><b>When to respond:</b> at request step q = 11 the current frame yields WAIT (p<sub>∅</sub> = 0.99); looking back over all 12 observed frames lowers p<sub>∅</sub> to 0.06, triggering a response at the same step. <b>Where to ground:</b> the top-scoring patch selects an earlier frame (i* = 4), and the part phrase of the answer segments that frame's 3D points. Zoom re-encodes phrase-selected windows at higher resolution; Refine corrects the decoder mask voxel-wise.</figcaption>
-    </figure>
+    <p>Both decisions come from the grounding model's own visual evidence.</p>
+    <div class="pp-steps">
+      <div class="pp-step">
+        <h3><span>1</span>Score the evidence</h3>
+        <p>RGB-D observations are stored as 3D-aware visual tokens. The model scores the visual patches of the frames it reads, together with a wait option.</p>
+        <a class="w1" href="assets/fig3-evidence.webp" target="_blank" rel="noopener"><img src="assets/fig3-evidence.webp" width="2400" height="1857" loading="lazy" alt="Frame encoder, memory of 3D-aware tokens, and the evidence scores of three frames next to the wait option."></a>
+      </div>
+      <div class="pp-step">
+        <h3><span>2</span>When to respond</h3>
+        <p>At request step q = 11 the current frame yields WAIT (p<sub>∅</sub> = 0.99). Looking back over all 12 observed frames lowers p<sub>∅</sub> to 0.06, triggering a response at the same step.</p>
+        <a class="w2" href="assets/fig3-when.webp" target="_blank" rel="noopener"><img src="assets/fig3-when.webp" width="1470" height="636" loading="lazy" alt="The when-to-respond panel: the current frame says wait, the look-back read triggers the response."></a>
+      </div>
+      <div class="pp-step">
+        <h3><span>3</span>Where to ground</h3>
+        <p>The top-scoring patch selects an earlier frame (i* = 4), and the part phrase of the answer segments that frame's 3D points. Zoom re-encodes phrase-selected windows at higher resolution; Refine corrects the decoder mask voxel-wise.</p>
+        <a class="w3" href="assets/fig3-where.webp" target="_blank" rel="noopener"><img src="assets/fig3-where.webp" width="1470" height="1405" loading="lazy" alt="The where-to-ground panel: zoom, mask decoder and refine produce the 3D part mask on the source frame."></a>
+      </div>
+    </div>
   </section>
 
   <section class="pp-wrap pp-sec" id="benchmark">
@@ -553,10 +602,21 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
 
   <section class="pp-wrap pp-sec" id="qualitative">
     <h2>Qualitative comparison</h2>
-    <figure class="pp-fig">
-      <a href="assets/fig4-qualitative.webp" target="_blank" rel="noopener"><img src="assets/fig4-qualitative.webp" width="2400" height="1552" loading="lazy" alt="Qualitative comparison of StreamAff with Qwen3-VL deciders in the streaming setting and with Fun3DU and T-FunS3D in the offline setting."></a>
-      <figcaption><b>Streaming (a, b):</b> all methods see only arrived frames. StreamAff responds on time by retrieving past evidence (a) or waiting for visibility (b); Qwen3-VL deciders respond late or mask the wrong object. <b>Offline (c, d):</b> masks are shown on the 3D points of the same valid source frame. Yellow: annotated part; green: StreamAff; magenta / blue: baselines.</figcaption>
-    </figure>
+    <div class="pp-steps">
+      <div class="pp-step">
+        <h3>Streaming</h3>
+        <p>All methods see only arrived frames. StreamAff responds on time by retrieving past evidence (a) or waiting for visibility (b); Qwen3-VL deciders respond late or mask the wrong object.</p>
+        <a href="assets/fig4-a.webp" target="_blank" rel="noopener"><img src="assets/fig4-a.webp" width="2400" height="432" loading="lazy" alt="History evidence: both Qwen3-VL deciders respond late, StreamAff responds on time from a valid source frame."></a>
+        <a href="assets/fig4-b.webp" target="_blank" rel="noopener"><img src="assets/fig4-b.webp" width="2400" height="419" loading="lazy" alt="Future evidence: StreamAff waits until the part is visible."></a>
+      </div>
+      <div class="pp-step">
+        <h3>Offline</h3>
+        <p>Masks are shown on the 3D points of the same valid source frame. StreamAff uses only the frames available at response, while Fun3DU and T-FunS3D use full streams.</p>
+        <a href="assets/fig4-c.webp" target="_blank" rel="noopener"><img src="assets/fig4-c.webp" width="2400" height="355" loading="lazy" alt="Functional part localization: ground truth, Fun3DU, T-FunS3D and StreamAff."></a>
+        <a href="assets/fig4-d.webp" target="_blank" rel="noopener"><img src="assets/fig4-d.webp" width="2400" height="375" loading="lazy" alt="Separating adjacent parts: ground truth, Fun3DU, T-FunS3D and StreamAff."></a>
+      </div>
+    </div>
+    <p class="pp-tnote">Yellow: annotated part. Green: StreamAff. Magenta and blue: baselines.</p>
   </section>
 
   <section class="pp-wrap pp-sec" id="cite">
@@ -978,6 +1038,125 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
   buildStrip(); buildPanels(); buildTimelineShell();
   const wanted = D.requests.findIndex(r => EMBED ? r.id === app.dataset.start : '#' + r.id === location.hash);
   select(wanted >= 0 ? wanted : 0);
+})();
+</script>
+<script type="application/json" id="pp-pc">[{"k":"history","setting":"History","tq":11,"ta":11,"ts":0,"bin":"assets/pc-history.bin","n":140266,"np":324,"s":1.413,"lo":[-0.9684,0.987,-1.5527],"ext":[2.6262,4.596,2.8328],"fovy":50.97,"pivot":[0,2.416,0],"parts":[[-0.0173,2.529,-0.0122],[0.9461,2.782,0.01]],"zc":[-0.0173,2.529,-0.0122],"zr":0.0731},{"k":"current","setting":"Current","tq":7,"ta":7,"ts":7,"bin":"assets/pc-current.bin","n":139690,"np":180,"s":1.414,"lo":[-1.4676,0.717,-0.6069],"ext":[4.3792,4.925,2.1038],"fovy":50.32,"pivot":[0,1.867,0],"parts":[[-0.7068,2.014,0.256],[-1.171,2.192,0.3435]],"zc":[-0.9401,2.1095,0.3003],"zr":0.2803},{"k":"future","setting":"Future","tq":5,"ta":7,"ts":7,"bin":"assets/pc-future.bin","n":152806,"np":86,"s":1.414,"lo":[-1.4319,1.288,-0.7819],"ext":[3.2818,2.534,2.2794],"fovy":49.39,"pivot":[0,2.638,0],"parts":[[1.486,3.236,0.1093]],"zc":[1.4876,3.228,0.1122],"zr":0.0478}]</script>
+<script>
+/* 3D view of a source frame: its points in colour, the predicted part in green. Plain WebGL, no library. */
+(function () {
+  var META = JSON.parse(document.getElementById('pp-pc').textContent), by = {};
+  META.forEach(function (m) { by[m.k] = m; });
+  var view = document.getElementById('pp-view'), cv = view.querySelector('canvas'), rings = [], hint = view.querySelector('.pp-hint'),
+      poster = document.getElementById('pp-poster'), zoomBtn = document.getElementById('pp-zoom'), img = document.getElementById('pp-caseimg'),
+      link = document.getElementById('pp-caselink'), cap = document.getElementById('pp-casecap'), tabs = document.getElementById('pp-cases');
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var gl = null; try { gl = cv.getContext('webgl', { antialias: true, alpha: false }); } catch (e) { gl = null; }
+  var cur = null, clouds = {}, cam = { yaw: 0, pitch: 0, zoom: 0, zoomTo: 0, free: false }, visible = false, raf = 0, t0 = performance.now(), loc = {};
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var swayYaw = function (t) { return .16 * Math.sin(t * .7); }, swayPitch = function (t) { return .04 * Math.sin(t * .5); };
+
+  if (gl) {
+    var sh = function (type, src) { var s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
+    var prog = gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER, 'attribute vec3 p;attribute vec3 c;uniform vec3 lo,ext,tint;uniform mat4 mvp;uniform float size,bias,mixk;varying vec3 col;' +
+      'void main(){vec3 w=lo+p*ext;vec4 q=mvp*vec4(w,1.);q.z-=bias*q.w;gl_Position=q;gl_PointSize=max(1.,size*w.y/max(q.w,.05));col=mix(c,tint,mixk);}'));
+    gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, 'precision mediump float;varying vec3 col;uniform float rnd;' +
+      'void main(){if(rnd>.5){vec2 d=gl_PointCoord-.5;if(dot(d,d)>.25)discard;}gl_FragColor=vec4(col,1.);}'));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) gl = null;
+    else {
+      gl.useProgram(prog);
+      ['p', 'c'].forEach(function (n) { loc[n] = gl.getAttribLocation(prog, n); gl.enableVertexAttribArray(loc[n]); });
+      ['lo', 'ext', 'tint', 'mvp', 'size', 'bias', 'mixk', 'rnd'].forEach(function (n) { loc[n] = gl.getUniformLocation(prog, n); });
+      gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL); gl.clearColor(242 / 255, 244 / 255, 247 / 255, 1);
+    }
+  }
+
+  function caption(m) {
+    cap.innerHTML = '<b>' + m.setting + '</b> · request at t = ' + m.tq + ' · response at t = ' + m.ta + ' · source frame t = ' + m.ts +
+      (gl ? ' · green: the predicted part on the 3D points of the source frame' : '');
+  }
+  function show(k) {
+    cur = by[k];
+    [].forEach.call(tabs.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.k === k)); });
+    img.src = link.href = 'assets/fig1-' + k + '.webp'; poster.src = 'assets/pc-' + k + '.jpg';
+    caption(cur);
+    cam.yaw = cam.pitch = cam.zoom = cam.zoomTo = 0; cam.free = false; zoomBtn.textContent = 'Zoom to part';
+    view.classList.remove('live'); zoomBtn.hidden = true; hint.hidden = true;
+    rings.forEach(function (r) { r.remove(); });
+    rings = cur.parts.map(function () { var r = document.createElement('i'); r.className = 'pp-ring'; r.hidden = true; return view.insertBefore(r, hint); });
+    if (gl && visible) load(k);
+  }
+  function load(k) {
+    var m = by[k], c = clouds[k];
+    if (c) { if (c.ready && cur === m) start(); return; }
+    c = clouds[k] = { ready: false };
+    fetch(m.bin).then(function (r) { if (!r.ok) throw new Error('cloud'); return r.arrayBuffer(); }).then(function (buf) {
+      c.pos = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, c.pos); gl.bufferData(gl.ARRAY_BUFFER, new Uint16Array(buf, 0, m.n * 3), gl.STATIC_DRAW);
+      c.col = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, c.col); gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(buf, m.n * 6, m.n * 3), gl.STATIC_DRAW);
+      c.ready = true; if (cur === m) start();
+    }).catch(function () { delete clouds[k]; });      /* the picture of the source frame stays in place */
+  }
+  function start() { zoomBtn.hidden = false; hint.hidden = cam.free; if (!raf) raf = requestAnimationFrame(frame); }
+
+  function frame(now) {
+    raf = 0;
+    var m = cur, c = m && clouds[m.k];
+    if (!visible || !c || !c.ready) return;
+    var dpr = Math.min(2, window.devicePixelRatio || 1), cw = view.clientWidth, ch = view.clientHeight, W = Math.round(cw * dpr), H = Math.round(ch * dpr);
+    if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; }
+    cam.zoom += (cam.zoomTo - cam.zoom) * .12;
+    var t = (now - t0) / 1000, sway = cam.free || still ? 0 : 1, z = cam.zoom;
+    var yaw = cam.yaw + sway * swayYaw(t), pitch = cam.pitch + sway * swayPitch(t);
+    var d0 = m.pivot[1], dist = d0 + (clamp(m.zr * 9, .85, 1.7) - d0) * z;
+    var P = [0, 1, 2].map(function (i) { return m.pivot[i] + (m.zc[i] - m.pivot[i]) * z; });
+    var f = [Math.sin(yaw) * Math.cos(pitch), Math.cos(yaw) * Math.cos(pitch), Math.sin(pitch)], rl = Math.hypot(f[1], f[0]);
+    var r = [f[1] / rl, -f[0] / rl, 0], u = [r[1] * f[2] - r[2] * f[1], r[2] * f[0] - r[0] * f[2], r[0] * f[1] - r[1] * f[0]];
+    var C = [P[0] - dist * f[0], P[1] - dist * f[1], P[2] - dist * f[2]], dot = function (a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; };
+    var V = [r[0], u[0], -f[0], 0, r[1], u[1], -f[1], 0, r[2], u[2], -f[2], 0, -dot(r, C), -dot(u, C), dot(f, C), 1];
+    var F = 1 / Math.tan(m.fovy * Math.PI / 360), near = .05, far = 40;
+    var Pm = [F / (W / H), 0, 0, 0, 0, F, 0, 0, 0, 0, (far + near) / (near - far), -1, 0, 0, 2 * far * near / (near - far), 0], M = new Float32Array(16);
+    for (var i = 0; i < 4; i++) for (var j = 0; j < 4; j++) M[j * 4 + i] = Pm[i] * V[j * 4] + Pm[4 + i] * V[j * 4 + 1] + Pm[8 + i] * V[j * 4 + 2] + Pm[12 + i] * V[j * 4 + 3];
+    gl.viewport(0, 0, W, H); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.bindBuffer(gl.ARRAY_BUFFER, c.pos); gl.vertexAttribPointer(loc.p, 3, gl.UNSIGNED_SHORT, true, 0, 0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, c.col); gl.vertexAttribPointer(loc.c, 3, gl.UNSIGNED_BYTE, true, 0, 0);
+    gl.uniform3fv(loc.lo, m.lo); gl.uniform3fv(loc.ext, m.ext); gl.uniformMatrix4fv(loc.mvp, false, M);
+    var size = 1.5 * m.s * H / 480, thin = 1 - .45 * z;           /* close up, the part needs less emphasis */
+    var pass = function (count, k, tint, mixk, bias, rnd) { gl.uniform1f(loc.size, size * k); gl.uniform3fv(loc.tint, tint); gl.uniform1f(loc.mixk, mixk); gl.uniform1f(loc.bias, bias); gl.uniform1f(loc.rnd, rnd); gl.drawArrays(gl.POINTS, 0, count); };
+    pass(m.n, 1, [0, 0, 0], 0, 0, 0);                                   /* the scene */
+    pass(m.np, 2.7 * thin, [.04, .07, .13], 1, .0015, 1);                      /* dark rim, so the part reads on any surface */
+    pass(m.np, 1.9 * thin, [.12, .88, .51], 1, .003, 1);                       /* the predicted part */
+    m.parts.forEach(function (c, k) {                                  /* a ring on each predicted part, so a few points are easy to find */
+      var q = [0, 1, 2, 3].map(function (i) { return M[i] * c[0] + M[4 + i] * c[1] + M[8 + i] * c[2] + M[12 + i]; }), ring = rings[k];
+      ring.hidden = !(q[3] > 0) || z > .5;
+      if (!ring.hidden) ring.style.transform = 'translate(' + ((q[0] / q[3] * .5 + .5) * cw).toFixed(1) + 'px,' + ((.5 - q[1] / q[3] * .5) * ch).toFixed(1) + 'px)';
+    });
+    if (!view.classList.contains('live')) view.classList.add('live');
+    raf = requestAnimationFrame(frame);
+  }
+
+  var drag = null;
+  view.addEventListener('pointerdown', function (e) {
+    if (e.target === zoomBtn || !gl) return;
+    if (!cam.free && !still) { var t = (performance.now() - t0) / 1000; cam.yaw += swayYaw(t); cam.pitch += swayPitch(t); }   /* keep the pose the viewer grabbed */
+    cam.free = true; hint.hidden = true; drag = { x: e.clientX, y: e.clientY }; view.classList.add('drag');
+    try { view.setPointerCapture(e.pointerId); } catch (err) { /* not essential */ }
+  });
+  view.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    cam.yaw = clamp(cam.yaw + (e.clientX - drag.x) * .006, -1.25, 1.25); cam.pitch = clamp(cam.pitch - (e.clientY - drag.y) * .005, -.6, .6);
+    drag.x = e.clientX; drag.y = e.clientY;
+  });
+  ['pointerup', 'pointercancel'].forEach(function (n) { view.addEventListener(n, function () { drag = null; view.classList.remove('drag'); }); });
+  zoomBtn.addEventListener('click', function () { cam.zoomTo = cam.zoomTo ? 0 : 1; zoomBtn.textContent = cam.zoomTo ? 'Whole frame' : 'Zoom to part'; });
+  tabs.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) show(b.dataset.k); });
+
+  show(META[0].k);
+  if (gl && 'IntersectionObserver' in window) new IntersectionObserver(function (es) {
+    visible = es[es.length - 1].isIntersecting;
+    if (visible && cur) load(cur.k);
+  }, { rootMargin: '300px 0px' }).observe(view);
+  else if (gl) { visible = true; load(cur.k); }
 })();
 </script>
 <script>

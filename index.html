@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>StreamAff</title>
 <meta name="description" content="When to Respond, Where to Ground: Streaming 3D Affordance Grounding. StreamAff decides when to respond to a request and where to ground the requested part, from a continuous RGB-D stream.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="StreamAff: When to Respond, Where to Ground">
+<meta property="og:description" content="Streaming 3D affordance grounding: decide when to respond to a request and where to ground the requested part, from an RGB-D stream.">
+<meta property="og:url" content="https://lwttttt.github.io/StreamAff/">
+<meta property="og:image" content="https://lwttttt.github.io/StreamAff/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/png;base64,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">
 <style>
 /* One-screen player: strip of requests → the request → three synchronized panels → one shared timeline.
@@ -65,6 +71,7 @@ button:focus-visible, .cell:focus-visible { outline: 2px solid var(--ink); outli
 }
 /* inside a longer page: no second logo, and the frames leave room for the section heading */
 .app[data-embed] .brand { display: none; }
+.app[data-embed] .top { order: 9; margin-top: 4px; }
 .app[data-embed] { --fh: clamp(250px, calc(100vh - 440px), 560px); }
 
 /* ── top: name + the 24 requests ── */
@@ -257,6 +264,7 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
 .pp-wrap { max-width: 1040px; margin-inline: auto; box-sizing: content-box;
   padding-left: max(clamp(16px, 5vw, 64px), env(safe-area-inset-left, 0px)); padding-right: max(clamp(16px, 5vw, 64px), env(safe-area-inset-right, 0px)); }
 .pp :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.pp [id] { scroll-margin-top: 76px; }   /* anchors stop below the sticky bar */
 
 /* top bar */
 .pp-bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--veil);
@@ -296,28 +304,32 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
 .pp-stats span { display: block; margin-top: 10px; font-size: 14.5px; line-height: 1.4; color: var(--ink-2); text-wrap: balance; }
 
 /* sections */
-.pp-sec { padding-top: clamp(64px, 9vw, 128px); }
+.pp-sec { padding-top: clamp(64px, 9vw, 128px); text-align: center; }
 .pp-sec h2 { margin: 0; font-size: clamp(1.55rem, 2.8vw, 2.2rem); line-height: 1.12; letter-spacing: -.035em; font-weight: 680; }
-.pp-sec h2 + p { margin: 10px 0 0; max-width: 62ch; color: var(--ink-2); }
+.pp-sec h2 + p { margin: 10px auto 0; max-width: 60ch; color: var(--ink-2); text-wrap: balance; }
 .pp-fig { margin: clamp(22px, 3vw, 36px) 0 0; }
+.pp-fig a { display: block; cursor: zoom-in; }
 .pp-fig img { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 10px; }
-.pp-fig figcaption { margin-top: 16px; max-width: 96ch; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+.pp-fig figcaption { margin: 16px auto 0; max-width: 88ch; font-size: 15px; line-height: 1.55; color: var(--ink-2); text-wrap: balance; }
 .pp-fig figcaption b { color: var(--ink); font-weight: 620; }
-.pp-video { display: block; width: 100%; max-width: 760px; margin-top: clamp(22px, 3vw, 36px); aspect-ratio: 4 / 3; border-radius: 12px;
-  border: 1px solid var(--line); background: var(--sunk); }
-.pp-tabs { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.pp-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 24px; }
 .pp-tabs button { padding: 8px 0 7px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--ink-2); font: 600 15px var(--font); cursor: pointer; }
 .pp-tabs button:hover { color: var(--ink); }
 .pp-tabs button[aria-pressed="true"], .pp-tabs button[aria-current="true"] { color: var(--ink); border-bottom-color: var(--ink); }
-.pp-video + .pp-tabs { margin-top: 12px; }
-.pp-settings { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 clamp(16px, 3vw, 36px); margin-top: clamp(22px, 3vw, 36px); }
-.pp-set { padding-top: 16px; border-top: 1px solid var(--ink); }
-.pp-set svg { display: block; width: 60px; height: 24px; margin-bottom: 8px; color: var(--ink); }
-.pp-set b { display: block; font-size: 17px; letter-spacing: -.015em; }
-.pp-set span { display: block; margin-top: 2px; font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
-.pp-facts { margin: 18px 0 0; font-size: 14.5px; color: var(--ink-2); }
+.pp-duo { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: clamp(20px, 4vw, 56px);
+  margin-top: clamp(22px, 3vw, 36px); text-align: left; }
+.pp-duo video { display: block; width: 100%; aspect-ratio: 4 / 3; border-radius: 12px; border: 1px solid var(--line); background: var(--sunk); }
+.pp-setrow { display: grid; grid-template-columns: 60px minmax(0, 1fr); align-items: start; gap: 0 16px; width: 100%; padding: 16px 14px 17px;
+  border: 0; border-top: 1px solid var(--line); background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.pp-setrow:last-child { border-bottom: 1px solid var(--line); }
+.pp-setrow:hover { background: var(--sunk); }
+.pp-setrow[aria-current="true"] { background: var(--sunk); box-shadow: inset 2px 0 0 var(--ink); }
+.pp-setrow svg { display: block; width: 60px; height: 24px; margin-top: 2px; color: var(--ink); }
+.pp-setrow b { display: block; font-size: 17px; letter-spacing: -.015em; }
+.pp-setrow small { display: block; margin-top: 1px; font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
+.pp-facts { margin: 18px auto 0; font-size: 14.5px; color: var(--ink-2); text-wrap: balance; }
 .pp-facts b { color: var(--ink); font-weight: 620; }
-.pp-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 10px 24px; }
+.pp-head { display: flex; flex-direction: column; align-items: center; gap: 12px; }
 .pp-tscroll { margin-top: clamp(18px, 2.4vw, 28px); overflow-x: auto; }
 .pp-table { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
 .pp-table th, .pp-table td { padding: 11px 14px; text-align: right; white-space: nowrap; }
@@ -332,27 +344,30 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
 .pp-table tbody tr.ours { background: var(--accent-tint); }
 .pp-table tbody tr.ours td { border-top-color: var(--ink); border-bottom: 1px solid var(--ink); }
 .pp-table tbody tr.ours td:first-child { font-weight: 720; }
-.pp-tnote { margin: 14px 0 0; max-width: 96ch; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
-.pp-abs { margin-top: clamp(22px, 3vw, 36px); border-block: 1px solid var(--line); }
+.pp-tnote { margin: 14px auto 0; max-width: 88ch; font-size: 14px; line-height: 1.55; color: var(--ink-2); text-wrap: balance; }
+.pp-abs { margin-top: clamp(22px, 3vw, 36px); border-block: 1px solid var(--line); text-align: left; }
 .pp-abs summary { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; font-weight: 600; cursor: pointer; list-style: none; }
 .pp-abs summary::-webkit-details-marker { display: none; }
 .pp-abs summary::after { content: "+"; font: 400 20px var(--mono); color: var(--ink-2); }
 .pp-abs[open] summary::after { content: "–"; }
 .pp-abs p { margin: 0 0 20px; max-width: 80ch; font-size: 16px; color: var(--ink-2); }
 .pp-abs p b { color: var(--ink); font-weight: 620; }
-.pp-bib { position: relative; margin-top: 18px; }
+.pp-bib { position: relative; margin-top: clamp(22px, 3vw, 36px); text-align: left; }
 .pp-bib pre { margin: 0; padding: 18px 20px; border-radius: 10px; background: var(--sunk); overflow-x: auto; font: 13.5px/1.6 var(--mono); }
 .pp-copy { position: absolute; top: 10px; right: 10px; height: 30px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px;
   background: var(--surface); color: var(--ink); font: 600 12px var(--font); cursor: pointer; }
 .pp-foot { margin-top: clamp(64px, 9vw, 128px); padding-block: 28px 36px; border-top: 1px solid var(--line); text-align: center; }
 .pp-foot .pp-logo { height: 22px; }
 
+@media (max-width: 860px) {
+  .pp-duo { grid-template-columns: minmax(0, 1fr); }
+  .pp-duo video { order: -1; }
+}
 @media (max-width: 760px) {
   body { font-size: 16px; }
   .pp-stats { grid-template-columns: minmax(0, 1fr); }
   .pp-stats div { border-left: 0; border-top: 1px solid var(--line); padding-block: 22px; }
   .pp-stats div:first-child { border-top: 0; }
-  .pp-settings { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; }
   .pp-authors span, .pp-affil span { margin: 0 .35em; }
   .pp-affil span { white-space: normal; }
   .pp-table th, .pp-table td { padding: 10px 10px; }
@@ -445,11 +460,39 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
     </div>
   </section>
 
+  <section class="pp-wrap pp-sec" id="settings">
+    <h2>Four evidence settings</h2>
+    <p>Where the evidence sits relative to the request decides what the right response is.</p>
+    <div class="pp-duo">
+      <div id="pp-chaps" role="group" aria-label="Evidence settings, as chapters of the video">
+        <button class="pp-setrow" type="button" data-t="0">
+          <svg viewBox="0 0 30 12" aria-hidden="true"><line class="gl-axis" x1="1" y1="8" x2="29" y2="8"/><rect class="gl-bar" x="10" y="5.5" width="10" height="5" rx="2"/><path class="gl-req" d="M15 6l-3.2-4.5h6.4z"/></svg>
+          <span><b>Current</b><small>The part is in view when the request arrives. Respond at once.</small></span>
+        </button>
+        <button class="pp-setrow" type="button" data-t="12">
+          <svg viewBox="0 0 30 12" aria-hidden="true"><line class="gl-axis" x1="1" y1="8" x2="29" y2="8"/><rect class="gl-bar" x="2" y="5.5" width="8" height="5" rx="2"/><path class="gl-req" d="M15 6l-3.2-4.5h6.4z"/></svg>
+          <span><b>History</b><small>The part was seen before the request. Respond at once, from the earlier frame.</small></span>
+        </button>
+        <button class="pp-setrow" type="button" data-t="24">
+          <svg viewBox="0 0 30 12" aria-hidden="true"><line class="gl-axis" x1="1" y1="8" x2="29" y2="8"/><rect class="gl-bar" x="20" y="5.5" width="8" height="5" rx="2"/><path class="gl-req" d="M15 6l-3.2-4.5h6.4z"/></svg>
+          <span><b>Future</b><small>The part appears after the request. Wait, then respond when it comes into view.</small></span>
+        </button>
+        <button class="pp-setrow" type="button" data-t="36">
+          <svg viewBox="0 0 30 12" aria-hidden="true"><line class="gl-axis" x1="1" y1="8" x2="29" y2="8" stroke-dasharray="2 2.4"/><path class="gl-req" d="M15 6l-3.2-4.5h6.4z"/></svg>
+          <span><b>Unobserved</b><small>The part never appears. Keep waiting.</small></span>
+        </button>
+      </div>
+      <video id="pp-video" controls muted loop playsinline preload="metadata" poster="assets/video-poster.jpg">
+        <source src="assets/video.mp4" type="video/mp4">
+      </video>
+    </div>
+  </section>
+
   <section class="pp-wrap pp-sec" id="overview">
     <h2>What it does</h2>
     <p>A request can arrive after the part was seen, while it is in view, or before it appears. StreamAff answers in language and predicts a 3D mask on the frame it selects.</p>
     <figure class="pp-fig">
-      <img src="assets/fig1-teaser.webp" width="2400" height="969" loading="lazy" alt="Three requests. History: the request arrives at t = 11 and StreamAff answers from the frame of t = 0. Current: the request at t = 7 is grounded in the same frame. Future: the request arrives at t = 5 and StreamAff waits until t = 7.">
+      <a href="assets/fig1-teaser.webp" target="_blank" rel="noopener"><img src="assets/fig1-teaser.webp" width="2400" height="969" loading="lazy" alt="Three requests. History: the request arrives at t = 11 and StreamAff answers from the frame of t = 0. Current: the request at t = 7 is grounded in the same frame. Future: the request arrives at t = 5 and StreamAff waits until t = 7."></a>
       <figcaption><b>History:</b> a request arrives at t = 11 and StreamAff responds using evidence observed at t = 0. <b>Current:</b> a request at t = 7 is grounded in the same frame. <b>Future:</b> a request arrives at t = 5; the agent waits until t = 7 to respond.</figcaption>
     </figure>
   </section>
@@ -458,48 +501,16 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
     <h2>How it works</h2>
     <p>The model scores the visual patches of the frames it reads. Their combined support, weighed against a wait option, decides when to respond; the highest-scoring patch selects the frame to ground in.</p>
     <figure class="pp-fig">
-      <img src="assets/fig3-method.webp" width="2400" height="1193" loading="lazy" alt="Overview of StreamAff: RGB-D frames are stored as 3D-aware visual tokens; a pointing head with a wait option decides when to respond and selects the source frame; zoom-and-refine grounding segments the part on the 3D points of that frame.">
+      <a href="assets/fig3-method.webp" target="_blank" rel="noopener"><img src="assets/fig3-method.webp" width="2400" height="1193" loading="lazy" alt="Overview of StreamAff: RGB-D frames are stored as 3D-aware visual tokens; a pointing head with a wait option decides when to respond and selects the source frame; zoom-and-refine grounding segments the part on the 3D points of that frame."></a>
       <figcaption><b>When to respond:</b> at request step q = 11 the current frame yields WAIT (p<sub>∅</sub> = 0.99); looking back over all 12 observed frames lowers p<sub>∅</sub> to 0.06, triggering a response at the same step. <b>Where to ground:</b> the top-scoring patch selects an earlier frame (i* = 4), and the part phrase of the answer segments that frame's 3D points. Zoom re-encodes phrase-selected windows at higher resolution; Refine corrects the decoder mask voxel-wise.</figcaption>
     </figure>
   </section>
 
-  <section class="pp-wrap pp-sec" id="video">
-    <h2>Video</h2>
-    <p>One request from each of the four evidence settings.</p>
-    <video class="pp-video" id="pp-video" controls muted loop playsinline preload="metadata" poster="assets/video-poster.jpg">
-      <source src="assets/video.mp4" type="video/mp4">
-    </video>
-    <div class="pp-tabs" id="pp-chaps" role="group" aria-label="Chapters">
-      <button type="button" data-t="0">Current</button>
-      <button type="button" data-t="12">History</button>
-      <button type="button" data-t="24">Future</button>
-      <button type="button" data-t="36">Unobserved</button>
-    </div>
-  </section>
-
   <section class="pp-wrap pp-sec" id="benchmark">
     <h2>StreamFun3D</h2>
-    <p>A benchmark derived from real-world 3D scenes. A request arrives mid-stream, and the evidence for it falls into one of four settings.</p>
-    <div class="pp-settings">
-      <div class="pp-set">
-        <svg viewBox="0 0 30 12" aria-hidden="true"><line class="gl-axis" x1="1" y1="8" x2="29" y2="8"/><rect class="gl-bar" x="10" y="5.5" width="10" height="5" rx="2"/><path class="gl-req" d="M15 6l-3.2-4.5h6.4z"/></svg>
-        <b>Current</b><span>The part is in view when the request arrives. Respond at once.</span>
-      </div>
-      <div class="pp-set">
-        <svg viewBox="0 0 30 12" aria-hidden="true"><line class="gl-axis" x1="1" y1="8" x2="29" y2="8"/><rect class="gl-bar" x="2" y="5.5" width="8" height="5" rx="2"/><path class="gl-req" d="M15 6l-3.2-4.5h6.4z"/></svg>
-        <b>History</b><span>The part was seen before the request. Respond at once, from the earlier frame.</span>
-      </div>
-      <div class="pp-set">
-        <svg viewBox="0 0 30 12" aria-hidden="true"><line class="gl-axis" x1="1" y1="8" x2="29" y2="8"/><rect class="gl-bar" x="20" y="5.5" width="8" height="5" rx="2"/><path class="gl-req" d="M15 6l-3.2-4.5h6.4z"/></svg>
-        <b>Future</b><span>The part appears after the request. Wait, then respond when it comes into view.</span>
-      </div>
-      <div class="pp-set">
-        <svg viewBox="0 0 30 12" aria-hidden="true"><line class="gl-axis" x1="1" y1="8" x2="29" y2="8" stroke-dasharray="2 2.4"/><path class="gl-req" d="M15 6l-3.2-4.5h6.4z"/></svg>
-        <b>Unobserved</b><span>The part never appears. Keep waiting.</span>
-      </div>
-    </div>
+    <p>A benchmark derived from real-world 3D scenes, with StreamIoU: a mask is credited only when the response is timely and grounded in a valid source frame.</p>
     <figure class="pp-fig">
-      <img src="assets/fig2-benchmark.webp" width="2400" height="1409" loading="lazy" alt="Left: how a grounded streaming sample is built, from evidence labelling and response-step annotation to answer generation and checking. Right: one sample for each of the four evidence settings.">
+      <a href="assets/fig2-benchmark.webp" target="_blank" rel="noopener"><img src="assets/fig2-benchmark.webp" width="2400" height="1409" loading="lazy" alt="Left: how a grounded streaming sample is built, from evidence labelling and response-step annotation to answer generation and checking. Right: one sample for each of the four evidence settings."></a>
       <figcaption><b>(a)</b> Construction of a grounded streaming sample. <b>(b)</b> Examples of the four evidence settings. Green marks valid source frames and target parts.</figcaption>
     </figure>
     <p class="pp-facts"><b>15 s and 30 s</b> streams at 1 fps · <b>650</b> requests per stream length · <b>30 / 28</b> scenes · <b>8,346 / 14,584</b> unique frames</p>
@@ -543,7 +554,7 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
   <section class="pp-wrap pp-sec" id="qualitative">
     <h2>Qualitative comparison</h2>
     <figure class="pp-fig">
-      <img src="assets/fig4-qualitative.webp" width="2400" height="1552" loading="lazy" alt="Qualitative comparison of StreamAff with Qwen3-VL deciders in the streaming setting and with Fun3DU and T-FunS3D in the offline setting.">
+      <a href="assets/fig4-qualitative.webp" target="_blank" rel="noopener"><img src="assets/fig4-qualitative.webp" width="2400" height="1552" loading="lazy" alt="Qualitative comparison of StreamAff with Qwen3-VL deciders in the streaming setting and with Fun3DU and T-FunS3D in the offline setting."></a>
       <figcaption><b>Streaming (a, b):</b> all methods see only arrived frames. StreamAff responds on time by retrieving past evidence (a) or waiting for visibility (b); Qwen3-VL deciders respond late or mask the wrong object. <b>Offline (c, d):</b> masks are shown on the 3D points of the same valid source frame. Yellow: annotated part; green: StreamAff; magenta / blue: baselines.</figcaption>
     </figure>
   </section>
@@ -974,7 +985,7 @@ body { background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -we
   var each = function (list, fn) { [].forEach.call(list, fn); };
 
   /* video chapters */
-  var v = document.getElementById('pp-video'), chaps = document.querySelectorAll('#pp-chaps button');
+  var v = document.getElementById('pp-video'), chaps = document.querySelectorAll('.pp-setrow');
   var mark = function () {
     var t = v.currentTime || 0, on = 0;
     each(chaps, function (c, i) { if (t >= +c.dataset.t - .05) on = i; });
